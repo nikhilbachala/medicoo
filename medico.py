@@ -66,7 +66,7 @@ Your expertise is critical in guiding informed decisions. Please proceed with pr
 ]
 
 # Initialize the generative model
-model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
+model = genai.GenerativeModel(model_name="gemma-3n-e4b-it",
                               generation_config=generation_config,
                               safety_settings=safety_settings)
 
