@@ -73,102 +73,91 @@ model = genai.GenerativeModel(model_name="gemini-2.0-flash-lite-preview-02-05",
 # Streamlit UI setup
 st.set_page_config(page_title="Medical Assistant", page_icon="🩺")
 
-# Add custom CSS for dark mode
+
+# Add custom CSS
 st.markdown(
     """
     <style>
         /* General Body Styling */
         body {
-            background-color: #121212;
-            color: #e0e0e0;
+            background-color: #f7f8fa;
         }
+        
 
         /* Title Styling */
         .st-title {
-            color: #4A90E2;
-            text-shadow: 1px 1px 2px #1E1E2E;
+            color: #4a4e69;
+            text-shadow: 1px 1px 2px #8d99ae;
             font-weight: bold;
         }
 
         /* Sidebar Styling */
         .stSidebar {
-            background-color: #1E1E2E !important;
-            color: #e0e0e0 !important;
+            background-color: rgba(128, 128, 128,) !important;
+            color: white !important;
         }
 
         /* Chat History Box */
         .chat-history {
             padding: 15px;
-            background-color: #1E1E2E;
+            background-color: #ffffff;
             border-radius: 10px;
-            color: #e0e0e0;
+            color: black;
             box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 15px;
         }
 
         /* Input Styling */
         .stTextInput input {
-            background-color: #dfe3e8;
-            color: #000000;
-            border: 2px solid #4A90E2;
-            border-radius: 7px;
+            background-color: #f1f1f1;
+            color: black;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
         }
 
         /* Buttons */
         .stButton button {
-            background-color: #4A90E2;
+            background-color: #4a4e69;
             color: white;
             border: none;
             border-radius: 5px;
             padding: 10px;
             transition: background-color 0.3s ease;
         }
-        
-
-        /* Header styling */
-        .main-header {
-            text-align: center;
-            padding: 2rem;
-            background: rgba(30, 30, 46, 0.8);
-            border-radius: 10px;
-            margin-bottom: 2rem;
+        .stButton button:hover {
+            background-color: #22223b;
         }
 
-        .main-header h1 {
-            color: #4A90E2;
-            font-size: 3rem;
-            font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .main-header h2 {
-            color: #e0e0e0;
-            font-size: 1.5rem;
-            font-weight: 400;
-        }
-        
-        /* Container styling */
-        .css-1y4p8pa {
-            padding: 2rem;
-            background: rgba(30, 30, 46, 0.8);
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+         /* Header styling */
+    .main-header {
+        text-align: center;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        margin-bottom: 2rem;
+    }
 
-        /* Footer styling */
-        .footer {
-            text-align: center;
-            margin-top: 3rem;
-            padding: 1rem;
-            background: rgba(30, 30, 46, 0.8);
-            border-radius: 10px;
-        }
-
-        .footer p {
-            color: #e0e0e0;
-            font-size: 0.9rem;
-        }
+    .main-header h1 {
+        color: white;
+        font-size: 3rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .main-header h2 {
+        color: #e0e0e0;
+        font-size: 1.5rem;
+        font-weight: 400;
+    }
+    
+    /* Container styling */
+    .css-1y4p8pa {
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
     </style>
     """,
     unsafe_allow_html=True
@@ -177,8 +166,8 @@ st.markdown(
 # App Header
 st.markdown("""
     <div class="main-header">
-        <h1>HealthLens  🩺</h1>
-        <h2>Your Health Your Control</h2>
+        <h1>HealthLens</h1>
+        <h2>An AI-Powered Medical Diagnosis </h2>
     </div>
 """, unsafe_allow_html=True)
 
@@ -213,7 +202,7 @@ if submit and file_uploaded:
 
 # Adding a Chatbot with Chat History and "Enter" Submission
 st.sidebar.title("Chatbot Assistant 💬")
-st.sidebar.write("Ask any medical-related questions about human health, wellness, and care.")
+st.sidebar.write("Ask any medical-related questions about animal care and health.")
 
 # Initialize chat history
 if "chat_history" not in st.session_state:
@@ -221,27 +210,15 @@ if "chat_history" not in st.session_state:
 
 # Create a form for text input and handle Enter key submission
 with st.sidebar.form(key="chat_form", clear_on_submit=True):
-    user_query = st.text_input("Type your question here:", key="chat_input", placeholder="Ask Kairos")
+    user_query = st.text_input("Type your question here:", key="chat_input")
     submit_query = st.form_submit_button("Ask")
 
 # Process the query when the form is submitted
 if submit_query and user_query:
-    chatbot_prompt = f"""You are a friendly and knowledgeable medical assistant, trained to communicate like a compassionate and approachable doctor. Your role is to provide users with clear, helpful, and professional guidance, including dietary recommendations, lifestyle advice, and specific dos and don’ts based on their health concerns.  
-
-    When interacting with users:  
-
-    1. **Friendly Communication:** Use conversational and empathetic language to ensure users feel comfortable and supported.  
-    2. **Personalized Dietary Advice:** Suggest foods to include and avoid based on the user’s health concerns. Be specific about why certain foods are beneficial or harmful.  
-    3. **Lifestyle Recommendations:** Provide clear and actionable dos and don’ts for maintaining or improving health.  
-        - **Dos:** Highlight healthy habits, exercises, or routines that may benefit the user.  
-        - **Don’ts:** Caution against harmful practices, habits, or behaviors that may worsen their condition.  
-    4. **Clear Explanations:** Use simple, relatable language while explaining your recommendations. Avoid medical jargon unless necessary, and always clarify technical terms.  
-    5. **Limitations and Disclaimer:** Emphasize that your advice is general and not a substitute for professional medical consultation. Include the disclaimer: "Please consult with a healthcare professional for personalized advice and treatment."  
-
-    Your goal is to make users feel informed, empowered, and supported, helping them make healthy choices while addressing their concerns with warmth and professionalism.
-   User Query: {user_query}
+    chatbot_prompt = f"""
+    You are an expert veterinarian assistant. Please answer the following user query accurately and professionally:
+    User Query: {user_query}
     """
-
     chat_response = model.generate_content([chatbot_prompt])
     
     # If a response is generated, add to chat history
@@ -254,19 +231,53 @@ if submit_query and user_query:
 if st.session_state.chat_history:
     st.sidebar.write("### Chat History:")
     for chat in st.session_state.chat_history:
-        st.sidebar.markdown(f"<div class='chat-history'><strong>You:</strong> {chat['user']}<br><strong>Kairos:</strong> {chat['bot']}</div>", unsafe_allow_html=True)
+        st.sidebar.markdown(f"<div class='chat-history'><strong>You:</strong> {chat['user']}<br><strong>Bot:</strong> {chat['bot']}</div>", unsafe_allow_html=True)
 
 # Footer information
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Note:** The chatbot is for informational purposes only. Always consult a doctor for specific concerns.")
+st.sidebar.markdown("**Note:** The chatbot is for informational purposes only. Always consult a professional veterinarian for specific concerns.")
 
 # Footer
 st.markdown("""
-    <div class="footer">
-        <p>Made with ❤️ for Healthcare</p>
+    <div style="text-align: center; margin-top: 3rem; padding: 1rem; 
+                background: rgba(255, 255, 255, 0.1); border-radius: 10px;">
+        <p style="color: #e0e0e0; font-size: 0.9rem;">
+            Made with ❤️ for healthcare  
+        </p>
     </div>
 """, unsafe_allow_html=True)
-  
-    #python -m streamlit run medico.py
+
+hide_streamlit_style = """
+                <style>
+                div[data-testid="stToolbar"] {
+                visibility: hidden;
+                height: 0%;
+                position: fixed;
+                }
+                div[data-testid="stDecoration"] {
+                visibility: hidden;
+                height: 0%;
+                position: fixed;
+                }
+                div[data-testid="stStatusWidget"] {
+                visibility: hidden;
+                height: 0%;
+                position: fixed;
+                }
+                #MainMenu {
+                visibility: hidden;
+                height: 0%;
+                }
+                header {
+                visibility: hidden;
+                height: 0%;
+                }
+                footer {
+                visibility: hidden;
+                height: 0%;
+                }
+                </style>
+                """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 
